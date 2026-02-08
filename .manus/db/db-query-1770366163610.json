@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO track_documents (id, trackId, userId, filename, fileType, fileUrl, extractedText, createdAt) VALUES ('test-doc-3', 'H_oZtxGncfx8PSzoBYDMj', 1, 'Gespreksverslag__Kelly_van_den_Broek_(ProRail) v2.doc.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'https://d2xsxph8kpxj0f.cloudfront.net/99393148/test.docx', '', NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute INSERT INTO track_documents (id, trackId, userId, filename, fileType, fileUrl, extractedText, createdAt) VALUES ('test-doc-3', 'H_oZtxGncfx8PSzoBYDMj', 1, 'Gespreksverslag__Kelly_van_den_Broek_(ProRail) v2.doc.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'https://d2xsxph8kpxj0f.cloudfront.net/99393148/test.docx', '', NOW());",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 61
+}

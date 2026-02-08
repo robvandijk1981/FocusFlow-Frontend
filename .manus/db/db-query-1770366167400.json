@@ -1,0 +1,20 @@
+{
+  "query": "SELECT * FROM track_documents WHERE id = 'test-doc-3';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute SELECT * FROM track_documents WHERE id = 'test-doc-3';",
+  "rows": [
+    {
+      "id": "test-doc-3",
+      "trackId": "H_oZtxGncfx8PSzoBYDMj",
+      "userId": "1",
+      "filename": "Gespreksverslag__Kelly_van_den_Broek_(ProRail) v2.doc.docx",
+      "fileType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "fileUrl": "https://d2xsxph8kpxj0f.cloudfront.net/99393148/test.docx",
+      "extractedText": "",
+      "createdAt": "2026-02-06 08:22:43"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttrackId\tuserId\tfilename\tfileType\tfileUrl\textractedText\tcreatedAt\ntest-doc-3\tH_oZtxGncfx8PSzoBYDMj\t1\tGespreksverslag__Kelly_van_den_Broek_(ProRail) v2.doc.docx\tapplication/vnd.openxmlformats-officedocument.wordprocessingml.document\thttps://d2xsxph8kpxj0f.cloudfront.net/99393148/test.docx\t\t2026-02-06 08:22:43\n",
+  "stderr": "",
+  "execution_time_ms": 51
+}

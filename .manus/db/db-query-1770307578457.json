@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS track_documents (\n  id VARCHAR(50) PRIMARY KEY,\n  trackId VARCHAR(50) NOT NULL,\n  userId INT NOT NULL,\n  filename VARCHAR(255) NOT NULL,\n  fileType VARCHAR(50) NOT NULL,\n  fileUrl TEXT NOT NULL,\n  extractedText TEXT,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute CREATE TABLE IF NOT EXISTS track_documents (\n  id VARCHAR(50) PRIMARY KEY,\n  trackId VARCHAR(50) NOT NULL,\n  userId INT NOT NULL,\n  filename VARCHAR(255) NOT NULL,\n  fileType VARCHAR(50) NOT NULL,\n  fileUrl TEXT NOT NULL,\n  extractedText TEXT,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 380
+}

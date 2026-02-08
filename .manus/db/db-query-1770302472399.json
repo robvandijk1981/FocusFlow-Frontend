@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS user_sessions (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  userId INT NOT NULL UNIQUE,\n  dailyIntention TEXT,\n  energyLevel ENUM('Low', 'Normal', 'High') DEFAULT 'Normal',\n  completionStreak INT NOT NULL DEFAULT 0,\n  trackSwitchCount INT NOT NULL DEFAULT 0,\n  currentTrackId VARCHAR(50),\n  focusMode BOOLEAN NOT NULL DEFAULT TRUE,\n  sessionStartTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  lastActivity TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute CREATE TABLE IF NOT EXISTS user_sessions (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  userId INT NOT NULL UNIQUE,\n  dailyIntention TEXT,\n  energyLevel ENUM('Low', 'Normal', 'High') DEFAULT 'Normal',\n  completionStreak INT NOT NULL DEFAULT 0,\n  trackSwitchCount INT NOT NULL DEFAULT 0,\n  currentTrackId VARCHAR(50),\n  focusMode BOOLEAN NOT NULL DEFAULT TRUE,\n  sessionStartTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  lastActivity TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 53
+}

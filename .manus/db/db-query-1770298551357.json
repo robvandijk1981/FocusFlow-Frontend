@@ -1,0 +1,15 @@
+{
+  "query": "SELECT id, name, openId FROM users LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute SELECT id, name, openId FROM users LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Rob van Dijk",
+      "openId": "6g5gFJ7fP858JuJN93XFgs"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\topenId\n1\tRob van Dijk\t6g5gFJ7fP858JuJN93XFgs\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}

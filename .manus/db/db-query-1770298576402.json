@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO tracks (userId, name, description, sortOrder, isActive, createdAt, updatedAt) VALUES \n(1, 'Freelance Consultant', 'Lopende projecten, leads omzetten, nlmtd taken voor People & Change team', 1, 1, NOW(), NOW()),\n(1, 'ModellenWerk', 'Startup met Tony - software gedreven workforce planning dienstverlening', 2, 1, NOW(), NOW()),\n(1, 'Gezin', 'Familie en gezinsleven', 3, 1, NOW(), NOW()),\n(1, 'Muziek', 'Muzikale hobby en activiteiten', 4, 1, NOW(), NOW()),\n(1, 'Huis', 'Huishouden en woning', 5, 1, NOW(), NOW()),\n(1, 'Gezondheid', 'Gezondheid en welzijn', 6, 1, NOW(), NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute INSERT INTO tracks (userId, name, description, sortOrder, isActive, createdAt, updatedAt) VALUES \n(1, 'Freelance Consultant', 'Lopende projecten, leads omzetten, nlmtd taken voor People & Change team', 1, 1, NOW(), NOW()),\n(1, 'ModellenWerk', 'Startup met Tony - software gedreven workforce planning dienstverlening', 2, 1, NOW(), NOW()),\n(1, 'Gezin', 'Familie en gezinsleven', 3, 1, NOW(), NOW()),\n(1, 'Muziek', 'Muzikale hobby en activiteiten', 4, 1, NOW(), NOW()),\n(1, 'Huis', 'Huishouden en woning', 5, 1, NOW(), NOW()),\n(1, 'Gezondheid', 'Gezondheid en welzijn', 6, 1, NOW(), NOW());",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 73
+}

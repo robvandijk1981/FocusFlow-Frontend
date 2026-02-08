@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, filename, fileType, LEFT(fileUrl, 50) as url_prefix FROM track_documents;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute SELECT id, filename, fileType, LEFT(fileUrl, 50) as url_prefix FROM track_documents;",
+  "rows": [
+    {
+      "id": "doc-1770366287094-syw3prkkd",
+      "filename": "test-upload.pdf",
+      "fileType": "application/pdf",
+      "url_prefix": "https://d2xsxph8kpxj0f.cloudfront.net/99393148/RvJ"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tfilename\tfileType\turl_prefix\ndoc-1770366287094-syw3prkkd\ttest-upload.pdf\tapplication/pdf\thttps://d2xsxph8kpxj0f.cloudfront.net/99393148/RvJ\n",
+  "stderr": "",
+  "execution_time_ms": 83
+}

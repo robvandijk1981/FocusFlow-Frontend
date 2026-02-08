@@ -1,0 +1,8 @@
+{
+  "query": "INSERT INTO track_documents (id, trackId, userId, filename, fileType, fileUrl, extractedText, createdAt) VALUES ('test-doc-2', 'H_oZtxGncfx8PSzoBYDMj', 1, 'Gespreksverslag__Kelly_van_den_Broek_(ProRail) v2.doc.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'https://d2xsxph8kpxj0f.cloudfront.net/99393148/RvJQDrqg3Vw24D9NdPtcsZ/documents/test.docx', '', NOW());",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute INSERT INTO track_documents (id, trackId, userId, filename, fileType, fileUrl, extractedText, createdAt) VALUES ('test-doc-2', 'H_oZtxGncfx8PSzoBYDMj', 1, 'Gespreksverslag__Kelly_van_den_Broek_(ProRail) v2.doc.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'https://d2xsxph8kpxj0f.cloudfront.net/99393148/RvJQDrqg3Vw24D9NdPtcsZ/documents/test.docx', '', NOW());",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1406 (22001) at line 1: Data too long for column 'fileType' at row 1"
+  ]
+}

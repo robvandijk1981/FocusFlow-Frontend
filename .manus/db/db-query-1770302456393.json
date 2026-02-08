@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE IF NOT EXISTS tracks (\n  id VARCHAR(50) PRIMARY KEY,\n  userId INT NOT NULL,\n  name VARCHAR(100) NOT NULL,\n  color VARCHAR(20) NOT NULL DEFAULT 'teal',\n  notes TEXT,\n  context TEXT,\n  orderIndex INT NOT NULL DEFAULT 0,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute CREATE TABLE IF NOT EXISTS tracks (\n  id VARCHAR(50) PRIMARY KEY,\n  userId INT NOT NULL,\n  name VARCHAR(100) NOT NULL,\n  color VARCHAR(20) NOT NULL DEFAULT 'teal',\n  notes TEXT,\n  context TEXT,\n  orderIndex INT NOT NULL DEFAULT 0,\n  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,\n  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 55
+}

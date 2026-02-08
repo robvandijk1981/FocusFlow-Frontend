@@ -1,0 +1,46 @@
+{
+  "query": "SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE();",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE();",
+  "rows": [
+    {
+      "table_name": "__drizzle_migrations"
+    },
+    {
+      "table_name": "users"
+    },
+    {
+      "table_name": "ai_conversations"
+    },
+    {
+      "table_name": "badges"
+    },
+    {
+      "table_name": "calendar_connections"
+    },
+    {
+      "table_name": "goals"
+    },
+    {
+      "table_name": "tasks"
+    },
+    {
+      "table_name": "tracks"
+    },
+    {
+      "table_name": "user_badges"
+    },
+    {
+      "table_name": "user_progress"
+    },
+    {
+      "table_name": "weekly_goals"
+    },
+    {
+      "table_name": "track_documents"
+    }
+  ],
+  "messages": [],
+  "stdout": "table_name\n__drizzle_migrations\nusers\nai_conversations\nbadges\ncalendar_connections\ngoals\ntasks\ntracks\nuser_badges\nuser_progress\nweekly_goals\ntrack_documents\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}

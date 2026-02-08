@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO track_documents (id, trackId, userId, filename, fileType, fileUrl, extractedText) VALUES ('test-doc-1', 'H_oZtxGncfx8PSzoBYDMj', 1, 'test.pdf', 'application/pdf', 'https://example.com/test.pdf', NULL);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 3hPiPhTs4VWGZqy.aa93e92f23c4 --database RvJQDrqg3Vw24D9NdPtcsZ --execute INSERT INTO track_documents (id, trackId, userId, filename, fileType, fileUrl, extractedText) VALUES ('test-doc-1', 'H_oZtxGncfx8PSzoBYDMj', 1, 'test.pdf', 'application/pdf', 'https://example.com/test.pdf', NULL);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 61
+}
