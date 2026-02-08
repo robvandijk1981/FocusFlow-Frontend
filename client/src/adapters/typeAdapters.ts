@@ -206,7 +206,7 @@ export function backendProjectToTrack(
     id: backendProject.id,
     userId: backendProject.userId ?? 0,
     name: backendProject.name,
-    color: metadata?.color ?? 'teal',
+    color: (backendProject as any).color ?? metadata?.color ?? 'teal',
     notes: metadata?.notes ?? null,
     context: metadata?.context ?? null,
     orderIndex: metadata?.orderIndex ?? 0,
