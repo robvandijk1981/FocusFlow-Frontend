@@ -229,6 +229,11 @@ export default function Home() {
   
   // Form state
   const [newTaskText, setNewTaskText] = useState('');
+  // Quick-add vanuit Today's Focus
+  const [todayTaskText, setTodayTaskText] = useState('');
+  const [todayTaskPriority, setTodayTaskPriority] = useState<'low' | 'medium' | 'high'>('medium');
+  const [todayTaskGoalId, setTodayTaskGoalId] = useState<string>('');
+  const [isAddingTodayTask, setIsAddingTodayTask] = useState(false);
   const [newGoalText, setNewGoalText] = useState('');
   const [showNewTrackDialog, setShowNewTrackDialog] = useState(false);
   const [newTrackName, setNewTrackName] = useState('');
@@ -518,6 +523,51 @@ export default function Home() {
     }
   };
 
+  // Standaard voor quick-add in Today's Focus: track ModellenWerk, doel "Leads en offertes"
+  const DEFAULT_TODAY_TRACK = 'modellenwerk';
+  const DEFAULT_TODAY_GOAL = 'leads en offertes';
+
+  useEffect(() => {
+    if (todayTaskGoalId || tracks.length === 0) return;
+    const track = tracks.find(t => t.name.trim().toLowerCase() === DEFAULT_TODAY_TRACK);
+    const goal =
+      track?.goals.find(g => g.name.trim().toLowerCase() === DEFAULT_TODAY_GOAL) ??
+      track?.goals.find(g => !g.isCompleted) ??
+      tracks.flatMap(t => t.goals).find(g => !g.isCompleted);
+    if (goal) setTodayTaskGoalId(goal.id);
+  }, [tracks, todayTaskGoalId]);
+
+  const handleAddTodayTask = async () => {
+    const text = todayTaskText.trim();
+    if (!text || isAddingTodayTask) return;
+    const track = tracks.find(t => t.goals.some(g => g.id === todayTaskGoalId));
+    const goal = track?.goals.find(g => g.id === todayTaskGoalId);
+    if (!track || !goal) {
+      toast.error('Kies eerst een doel voor deze taak');
+      return;
+    }
+    setIsAddingTodayTask(true);
+    try {
+      await apiCreateTask({
+        id: nanoid(),
+        goalId: goal.id,
+        text,
+        priority: todayTaskPriority,
+        isToday: true,
+        orderIndex: goal.tasks.length,
+      });
+      setTodayTaskText('');
+      setTodayTaskPriority('medium');
+      await refetch();
+      toast.success(`Toegevoegd aan Today's Focus (${track.name} → ${goal.name})`);
+    } catch (error) {
+      console.error('Failed to create today task:', error);
+      toast.error('Kon taak niet toevoegen aan Today\'s Focus');
+    } finally {
+      setIsAddingTodayTask(false);
+    }
+  };
+
   const handleToggleTask = async (taskId: string, goalId: string, trackId: string) => {
     const track = tracks.find(t => t.id === trackId);
     const goal = track?.goals.find(g => g.id === goalId);
@@ -708,7 +758,7 @@ export default function Home() {
               <p className="text-stone-500 text-sm">
                 {todayTasks.some(t => t.isCompleted) 
                   ? 'Alle taken voor vandaag zijn voltooid! Goed gedaan!' 
-                  : 'Voeg taken toe aan Today\'s Focus door op het ster-icoon te klikken bij een taak, of gebruik Daily Setup'}
+                  : 'Typ hieronder een nieuwe taak, klik op het ster-icoon bij een bestaande taak, of gebruik Daily Setup'}
               </p>
             ) : (
               <DndContext
@@ -738,6 +788,63 @@ export default function Home() {
                 </SortableContext>
               </DndContext>
             )}
+
+            {/* Quick-add: nieuwe taak direct in Today's Focus */}
+            <div className="mt-4 pt-3 border-t border-orange-200 space-y-2">
+              <div className="flex gap-2">
+                <Input
+                  value={todayTaskText}
+                  onChange={(e) => setTodayTaskText(e.target.value)}
+                  placeholder="Nieuwe taak voor vandaag..."
+                  className="bg-white"
+                  disabled={isAddingTodayTask}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleAddTodayTask();
+                    if (e.key === 'Escape') setTodayTaskText('');
+                  }}
+                />
+                <Button
+                  size="sm"
+                  onClick={handleAddTodayTask}
+                  disabled={!todayTaskText.trim() || !todayTaskGoalId || isAddingTodayTask}
+                  className="bg-orange-500 hover:bg-orange-600 text-white"
+                  title="Voeg toe aan Today's Focus"
+                >
+                  {isAddingTodayTask ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Select value={todayTaskGoalId} onValueChange={setTodayTaskGoalId}>
+                  <SelectTrigger className="h-8 w-auto min-w-[220px] bg-white text-xs">
+                    <SelectValue placeholder="Kies track en doel" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {tracks.flatMap(track =>
+                      track.goals
+                        .filter(goal => !goal.isCompleted || goal.id === todayTaskGoalId)
+                        .map(goal => (
+                          <SelectItem key={goal.id} value={goal.id} className="text-xs">
+                            {track.name} → {goal.name}
+                          </SelectItem>
+                        ))
+                    )}
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={todayTaskPriority}
+                  onValueChange={(v) => setTodayTaskPriority(v as 'low' | 'medium' | 'high')}
+                >
+                  <SelectTrigger className="h-8 w-auto min-w-[110px] bg-white text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="low" className="text-xs">Laag</SelectItem>
+                    <SelectItem value="medium" className="text-xs">Midden</SelectItem>
+                    <SelectItem value="high" className="text-xs">Hoog</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
