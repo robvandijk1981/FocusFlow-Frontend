@@ -15,7 +15,8 @@ import {
   Plus, Settings, Loader2, Sparkles, CheckCircle, X, 
   ChevronDown, ChevronLeft, ChevronRight, Trash2, Edit2,
   Target, Calendar, Brain, Eye, EyeOff, Star, Mic, MicOff,
-  FileText, Upload, MessageSquare, Zap, BookOpen, GripVertical
+  FileText, Upload, MessageSquare, Zap, BookOpen, GripVertical,
+  Volume2, VolumeX
 } from 'lucide-react';
 import {
   DndContext,
@@ -36,6 +37,18 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { nanoid } from 'nanoid';
 import { toast } from 'sonner';
+import { celebrate, isCelebrationSoundOn, setCelebrationSoundOn } from '@/lib/celebrate';
+import { FillLibrarySettings } from '@/components/FillLibrarySettings';
+
+const LAST_FILL_KEY = 'focusflow:lastFill';
+
+function readLastFill(): string | null {
+  try {
+    return localStorage.getItem(LAST_FILL_KEY);
+  } catch {
+    return null;
+  }
+}
 
 // Track colors
 const trackColors: Record<string, string> = {
@@ -211,6 +224,8 @@ export default function Home() {
   
   // Data state
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [celebrationSound, setCelebrationSound] = useState(isCelebrationSoundOn);
+  const [lastFill, setLastFill] = useState<string | null>(readLastFill);
   const [todayTasks, setTodayTasks] = useState<Array<Task & { trackId: string; trackName: string; goalName: string }>>([]);
   
   // UI state
@@ -524,6 +539,30 @@ export default function Home() {
     const task = goal?.tasks.find(t => t.id === taskId);
     if (!task) return;
 
+    // Celebrate right away (inside the click gesture, so audio may start on iOS)
+    if (!task.isCompleted) {
+      const isTodayTask = todayTasks.some(tk => tk.id === taskId);
+      const remainingToday = todayTasks.filter(tk => !tk.isCompleted && tk.id !== taskId).length;
+      const clearedToday = isTodayTask && remainingToday === 0;
+      const fill = celebrate(clearedToday ? 'big' : 'small');
+      const fillLabel = fill ? `🥁 ${fill.replace(/\.[^.]+$/, '')}` : undefined;
+      if (fill) {
+        setLastFill(fill);
+        try {
+          localStorage.setItem(LAST_FILL_KEY, fill);
+        } catch {
+          // not persisted, fine
+        }
+      }
+      if (clearedToday) {
+        toast.success("Today's Focus is leeg. Strak gespeeld! 🥁", { description: fillLabel });
+      } else if (isTodayTask) {
+        toast.success(`Afgevinkt, nog ${remainingToday} te gaan vandaag`, { description: fillLabel });
+      } else if (fillLabel) {
+        toast(fillLabel);
+      }
+    }
+
     try {
       await apiUpdateTask(taskId, { isCompleted: !task.isCompleted });
       
@@ -681,6 +720,18 @@ export default function Home() {
             <Button
               variant="outline"
               size="sm"
+              onClick={() => {
+                const next = !celebrationSound;
+                setCelebrationSound(next);
+                setCelebrationSoundOn(next);
+              }}
+              title={celebrationSound ? 'Drumfill uitzetten' : 'Drumfill aanzetten'}
+            >
+              {celebrationSound ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => setShowAISettings(true)}
             >
               <Settings className="w-4 h-4" />
@@ -699,6 +750,14 @@ export default function Home() {
               {dailyIntention && (
                 <span className="text-sm font-normal text-stone-500 ml-2">
                   — {dailyIntention}
+                </span>
+              )}
+              {lastFill && (
+                <span
+                  className="ml-auto text-xs font-normal text-stone-400 truncate max-w-[50%]"
+                  title={`Laatste fill: ${lastFill}`}
+                >
+                  🥁 {lastFill.replace(/\.[^.]+$/, '')}
                 </span>
               )}
             </CardTitle>
@@ -1303,9 +1362,10 @@ export default function Home() {
       <Dialog open={showAISettings} onOpenChange={setShowAISettings}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>AI Instellingen</DialogTitle>
+            <DialogTitle>Instellingen</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            <FillLibrarySettings />
             <p className="text-sm text-stone-600">
               FocusFlow gebruikt AI om je te helpen met:
             </p>
