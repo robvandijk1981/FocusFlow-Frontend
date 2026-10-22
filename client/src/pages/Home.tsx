@@ -15,7 +15,8 @@ import {
   Plus, Settings, Loader2, Sparkles, CheckCircle, X, 
   ChevronDown, ChevronLeft, ChevronRight, Trash2, Edit2,
   Target, Calendar, Brain, Eye, EyeOff, Star, Mic, MicOff,
-  FileText, Upload, MessageSquare, Zap, BookOpen, GripVertical
+  FileText, Upload, MessageSquare, Zap, BookOpen, GripVertical,
+  Volume2, VolumeX
 } from 'lucide-react';
 import {
   DndContext,
@@ -36,6 +37,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { nanoid } from 'nanoid';
 import { toast } from 'sonner';
+import { celebrate, isCelebrationSoundOn, setCelebrationSoundOn } from '@/lib/celebrate';
 
 // Track colors
 const trackColors: Record<string, string> = {
@@ -211,6 +213,7 @@ export default function Home() {
   
   // Data state
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [celebrationSound, setCelebrationSound] = useState(isCelebrationSoundOn);
   const [todayTasks, setTodayTasks] = useState<Array<Task & { trackId: string; trackName: string; goalName: string }>>([]);
   
   // UI state
@@ -524,6 +527,19 @@ export default function Home() {
     const task = goal?.tasks.find(t => t.id === taskId);
     if (!task) return;
 
+    // Celebrate right away (inside the click gesture, so audio may start on iOS)
+    if (!task.isCompleted) {
+      const isTodayTask = todayTasks.some(tk => tk.id === taskId);
+      const remainingToday = todayTasks.filter(tk => !tk.isCompleted && tk.id !== taskId).length;
+      const clearedToday = isTodayTask && remainingToday === 0;
+      celebrate(clearedToday ? 'big' : 'small');
+      if (clearedToday) {
+        toast.success("Today's Focus is leeg. Strak gespeeld! 🥁");
+      } else if (isTodayTask) {
+        toast.success(`Afgevinkt, nog ${remainingToday} te gaan vandaag`);
+      }
+    }
+
     try {
       await apiUpdateTask(taskId, { isCompleted: !task.isCompleted });
       
@@ -677,6 +693,18 @@ export default function Home() {
               title={focusMode ? 'Toon alle Tracks' : 'Focus Mode'}
             >
               {focusMode ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const next = !celebrationSound;
+                setCelebrationSound(next);
+                setCelebrationSoundOn(next);
+              }}
+              title={celebrationSound ? 'Drumfill uitzetten' : 'Drumfill aanzetten'}
+            >
+              {celebrationSound ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
             </Button>
             <Button
               variant="outline"
