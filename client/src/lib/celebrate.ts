@@ -7,9 +7,14 @@
  * - "small": one-beat sextuplet cascade down the toms into kick + crash.
  * - "big":   two-beat fill with flams and a double crash, for clearing Today's Focus.
  *
+ * When the user has loaded their own fills (see fillLibrary.ts), a random one
+ * of those plays instead of the synthesized fill.
+ *
  * Sound can be muted; the setting lives in localStorage. Confetti is skipped
  * when the user prefers reduced motion.
  */
+
+import { getFillNames, playRandomFill, prepareNextFill } from './fillLibrary';
 
 export type CelebrationSize = 'small' | 'big';
 
@@ -45,7 +50,10 @@ if (typeof window !== 'undefined') {
     (e) => {
       lastPointer = { x: e.clientX, y: e.clientY };
       // Unlock audio inside a real user gesture (needed on iOS Safari).
-      if (isCelebrationSoundOn()) getAudio();
+      if (isCelebrationSoundOn()) {
+        const ac = getAudio();
+        if (ac && getFillNames().length > 0) prepareNextFill(ac);
+      }
     },
     { capture: true, passive: true },
   );
@@ -62,6 +70,7 @@ let drumBus: GainNode | null = null;
 let gatedSend: GainNode | null = null;
 let roomSend: GainNode | null = null;
 let noiseBuffer: AudioBuffer | null = null;
+let sampleOut: GainNode | null = null;
 
 function makeImpulse(
   ac: BaseAudioContext,
@@ -98,6 +107,11 @@ function getAudio(): AudioContext | null {
     const master = ac.createGain();
     master.gain.value = 0.75;
     comp.connect(master).connect(ac.destination);
+
+    // User-loaded fills play straight out, untouched
+    sampleOut = ac.createGain();
+    sampleOut.gain.value = 0.9;
+    sampleOut.connect(ac.destination);
 
     // Drum bus with soft saturation for weight
     drumBus = ac.createGain();
@@ -492,16 +506,26 @@ function burstConfetti(size: CelebrationSize) {
 
 // ==================== PUBLIC API ====================
 
-export function celebrate(size: CelebrationSize = 'small'): void {
+/**
+ * Confetti plus a drum fill. Returns the file name of the fill that played
+ * when it came from the user's own library, otherwise null.
+ */
+export function celebrate(size: CelebrationSize = 'small'): string | null {
   try {
     burstConfetti(size);
   } catch (err) {
     console.warn('Confetti failed:', err);
   }
-  if (!isCelebrationSoundOn()) return;
+  if (!isCelebrationSoundOn()) return null;
   try {
+    const ac = getAudio();
+    if (ac && sampleOut && getFillNames().length > 0) {
+      const name = playRandomFill(ac, sampleOut);
+      if (name) return name;
+    }
     playDrumFill(size);
   } catch (err) {
     console.warn('Drum fill failed:', err);
   }
+  return null;
 }
